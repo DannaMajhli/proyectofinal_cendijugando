@@ -1,17 +1,13 @@
 // pages/admin/Alumnos.jsx
-// Cubre: hook personalizado useAlumnos, renderizado de listas, query params, modal, CRUD
-
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { useAlumnos } from '../../hooks/index'
-import { Modal } from '../../components/ui/index.jsx'
-import { Badge } from '../../components/ui/index.jsx'
+import { useAlumnos, useDebounce, useFetch } from '../../hooks/index'
+import { Modal, Badge } from '../../components/ui/index.jsx'
 import LoadingSpinner from '../../components/ui/LoadingSpinner'
-import { useDebounce } from '../../hooks/index'
 import FormularioAlumno from './FormularioAlumno'
+import { gruposService } from '../../services/api'
 
 export default function Alumnos() {
-  // Query params: /admin/alumnos?grupo=Girasoles&busqueda=carlos
   const [searchParams, setSearchParams] = useSearchParams()
   const busquedaParam = searchParams.get('busqueda') || ''
   const grupoParam = searchParams.get('grupo') || ''
@@ -28,7 +24,9 @@ export default function Alumnos() {
   const { alumnos, cargando, error, total, pagina, setPagina, crear, actualizar, eliminar } =
     useAlumnos({ busqueda: busquedaDebounced, grupo: grupoParam })
 
-  // Actualizar query params al buscar
+  // Carga grupos dinámicamente desde la BD
+  const { data: grupos } = useFetch(() => gruposService.listar(), [])
+
   const handleBusqueda = (e) => {
     const val = e.target.value
     setBusqueda(val)
@@ -63,16 +61,8 @@ export default function Alumnos() {
     setTimeout(() => setMensaje({ tipo: '', texto: '' }), 3000)
   }
 
-  const abrirEditar = (alumno) => {
-    setAlumnoEditar(alumno)
-    setModalAbierto(true)
-  }
-
-  const abrirNuevo = () => {
-    setAlumnoEditar(null)
-    setModalAbierto(true)
-  }
-
+  const abrirEditar = (alumno) => { setAlumnoEditar(alumno); setModalAbierto(true) }
+  const abrirNuevo = () => { setAlumnoEditar(null); setModalAbierto(true) }
   const totalPaginas = Math.ceil(total / 10)
 
   return (
@@ -82,9 +72,7 @@ export default function Alumnos() {
         <button className="btn btn-primary" onClick={abrirNuevo}>+ Nuevo alumno</button>
       </div>
 
-      {mensaje.texto && (
-        <div className={`alert alert-${mensaje.tipo}`}>{mensaje.texto}</div>
-      )}
+      {mensaje.texto && <div className={`alert alert-${mensaje.tipo}`}>{mensaje.texto}</div>}
 
       {/* Filtros */}
       <div className="card mb-2">
@@ -97,17 +85,17 @@ export default function Alumnos() {
             onChange={handleBusqueda}
             style={{ maxWidth: 260 }}
           />
+          {/* Grupos cargados dinámicamente desde la BD */}
           <select
             className="form-control"
-            style={{ maxWidth: 180 }}
+            style={{ maxWidth: 200 }}
             value={grupoParam}
             onChange={e => setSearchParams(e.target.value ? { grupo: e.target.value } : {})}
           >
             <option value="">Todos los grupos</option>
-            <option value="Girasoles">Girasoles</option>
-            <option value="Mariposas">Mariposas</option>
-            <option value="Estrellitas">Estrellitas</option>
-            <option value="Arcoiris">Arcoiris</option>
+            {(grupos || []).map(g => (
+              <option key={g.id} value={g.nombre}>{g.nombre}</option>
+            ))}
           </select>
           <span className="text-muted" style={{ alignSelf: 'center', fontSize: 13 }}>
             {total} alumnos encontrados
@@ -132,7 +120,6 @@ export default function Alumnos() {
                 </tr>
               </thead>
               <tbody>
-                {/* Renderizado de lista */}
                 {alumnos.map((alumno) => (
                   <tr key={alumno.id}>
                     <td>
@@ -155,15 +142,9 @@ export default function Alumnos() {
                     </td>
                     <td>
                       <div className="table-actions">
-                        <Link to={`/admin/alumnos/${alumno.id}`} className="btn btn-secondary btn-sm">
-                          👁 Ver
-                        </Link>
-                        <button className="btn btn-secondary btn-sm" onClick={() => abrirEditar(alumno)}>
-                          ✏️ Editar
-                        </button>
-                        <button className="btn btn-danger btn-sm" onClick={() => setConfirmEliminar(alumno)}>
-                          🗑️
-                        </button>
+                        <Link to={`/admin/alumnos/${alumno.id}`} className="btn btn-secondary btn-sm">👁 Ver</Link>
+                        <button className="btn btn-secondary btn-sm" onClick={() => abrirEditar(alumno)}>✏️ Editar</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => setConfirmEliminar(alumno)}>🗑️</button>
                       </div>
                     </td>
                   </tr>
@@ -175,24 +156,16 @@ export default function Alumnos() {
             </table>
           </div>
 
-          {/* Paginación */}
           {totalPaginas > 1 && (
             <div className="pagination">
               {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(p => (
-                <button
-                  key={p}
-                  className={`page-btn ${p === pagina ? 'active' : ''}`}
-                  onClick={() => setPagina(p)}
-                >
-                  {p}
-                </button>
+                <button key={p} className={`page-btn ${p === pagina ? 'active' : ''}`} onClick={() => setPagina(p)}>{p}</button>
               ))}
             </div>
           )}
         </div>
       )}
 
-      {/* Modal Alta/Edición */}
       <Modal
         abierto={modalAbierto}
         titulo={alumnoEditar ? 'Editar alumno' : 'Registrar nuevo alumno'}
@@ -201,12 +174,7 @@ export default function Alumnos() {
         <FormularioAlumno alumno={alumnoEditar} onGuardar={handleGuardar} onCancelar={() => setModalAbierto(false)} />
       </Modal>
 
-      {/* Modal confirmación eliminar */}
-      <Modal
-        abierto={!!confirmEliminar}
-        titulo="Confirmar eliminación"
-        onClose={() => setConfirmEliminar(null)}
-      >
+      <Modal abierto={!!confirmEliminar} titulo="Confirmar eliminación" onClose={() => setConfirmEliminar(null)}>
         <div className="modal-body">
           <p>¿Estás seguro de eliminar a <strong>{confirmEliminar?.nombre}</strong>? Esta acción no se puede deshacer.</p>
         </div>
