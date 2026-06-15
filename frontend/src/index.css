@@ -334,3 +334,65 @@ body.dark select option { background: #2a2a2a; color: #e8e8e8; }
   .auth-card { padding: 24px 16px; }
   .btn { font-size: 12px; padding: 7px 12px; }
 }
+
+/* ── Menú hamburguesa ── */
+.navbar-hamburger {
+  display: none;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.navbar-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  background: var(--azul);
+  flex-direction: column;
+  padding: 12px;
+  gap: 4px;
+  z-index: 99;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.navbar-mobile-menu a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.navbar-mobile-menu a:hover,
+.navbar-mobile-menu a.active { background: rgba(255,255,255,0.15); color: white; }
+
+.navbar-mobile-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+.navbar-mobile-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
+.btn-salir { background: rgba(220,53,69,0.4); }
+.btn-salir:hover { background: rgba(220,53,69,0.6); }
+
+@media (max-width: 768px) {
+  .navbar-hamburger { display: block; }
+  .navbar-links { display: none; }
+  .navbar-mobile-menu { display: flex; }
+}
