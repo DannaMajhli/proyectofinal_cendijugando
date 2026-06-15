@@ -296,3 +296,41 @@ body.dark table thead tr { background: var(--azul); }
 body.dark .page-btn { background: #2a2a2a; color: #e8e8e8; border-color: #3a3a3a; }
 body.dark .page-btn.active { background: var(--azul); color: white; }
 body.dark select option { background: #2a2a2a; color: #e8e8e8; }
+
+/* ── Responsivo móvil ── */
+@media (max-width: 768px) {
+
+  .navbar { padding: 0 12px; }
+  .navbar-links { display: none; } /* se ocultan los links en móvil */
+  .navbar-user span { display: none; } /* oculta el nombre, deja solo el avatar */
+ 
+  .page-container { padding: 16px 12px; }
+  .page-title { font-size: 18px; }
+
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-value { font-size: 22px; }
+
+  .card { padding: 16px; }
+
+  .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 500px; }
+
+  .table-actions { flex-direction: column; gap: 4px; }
+
+  .modal { margin: 0 8px; }
+  .modal-footer { flex-direction: column; }
+  .modal-footer .btn { width: 100%; justify-content: center; }
+
+  .hero h1 { font-size: 22px; }
+  .hero p { font-size: 14px; }
+
+  .grid-2 { grid-template-columns: 1fr; }
+
+  .flex-between { flex-wrap: wrap; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .auth-card { padding: 24px 16px; }
+  .btn { font-size: 12px; padding: 7px 12px; }
+}
