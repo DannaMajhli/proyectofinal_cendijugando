@@ -1,7 +1,7 @@
 // src/routes/auth.routes.js
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { login, registro, perfil } from '../controllers/auth.controller.js'
+import { login, registro, perfil, actualizarPerfil, cambiarContrasena } from '../controllers/auth.controller.js'
 import { verificarToken } from '../middlewares/auth.middleware.js'
 import { validarCampos } from '../middlewares/validacion.middleware.js'
 
@@ -25,5 +25,7 @@ router.post('/registro', [
 
 // GET /api/auth/perfil — ruta protegida
 router.get('/perfil', verificarToken, perfil)
+router.put('/perfil', verificarToken, actualizarPerfil)
+router.put('/cambiar-contrasena', verificarToken, cambiarContrasena)
 
 export default router

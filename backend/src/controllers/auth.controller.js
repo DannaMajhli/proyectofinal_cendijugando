@@ -111,3 +111,36 @@ export const perfil = async (req, res) => {
     return res.status(500).json({ mensaje: 'Error interno del servidor' })
   }
 }
+
+// Actualizar nombre
+export const actualizarPerfil = async (req, res) => {
+  const { nombre } = req.body
+  if (!nombre || !nombre.trim()) {
+    return res.status(400).json({ mensaje: 'El nombre es requerido' })
+  }
+  try {
+    await pool.query('UPDATE usuarios SET nombre = ? WHERE id = ?', [nombre.trim(), req.usuario.id])
+    res.json({ mensaje: 'Nombre actualizado correctamente' })
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar el perfil' })
+  }
+}
+
+// Cambiar contraseña
+export const cambiarContrasena = async (req, res) => {
+  const { contrasena_actual, contrasena_nueva } = req.body
+  if (!contrasena_actual || !contrasena_nueva) {
+    return res.status(400).json({ mensaje: 'Faltan datos' })
+  }
+  try {
+    const [rows] = await pool.query('SELECT contrasena FROM usuarios WHERE id = ?', [req.usuario.id])
+    const valida = await bcrypt.compare(contrasena_actual, rows[0].contrasena)
+    if (!valida) return res.status(401).json({ mensaje: '❌ Contraseña actual incorrecta' })
+
+    const hash = await bcrypt.hash(contrasena_nueva, 10)
+    await pool.query('UPDATE usuarios SET contrasena = ? WHERE id = ?', [hash, req.usuario.id])
+    res.json({ mensaje: 'Contraseña actualizada correctamente' })
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al cambiar la contraseña' })
+  }
+}

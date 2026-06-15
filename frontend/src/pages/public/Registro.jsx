@@ -83,6 +83,10 @@ export default function Registro() {
   return (
     <div className="auth-container">
       <div className="auth-card" style={{ maxWidth: 520 }}>
+         <button onClick={() => navigate('/')} 
+           style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--azul)', fontSize: 14, marginBottom: 8 }}>
+          ← Volver 
+         </button>
         <div className="auth-logo">
           <div className="emoji">🌟</div>
           <h1>Cendi Jugando</h1>
@@ -95,7 +99,7 @@ export default function Registro() {
         <form onSubmit={handleSubmit} noValidate>
           {/* ── Sección 1: Formulario CONTROLADO ── */}
           <p style={{ fontSize: 12, color: 'var(--azul)', fontWeight: 600, marginBottom: 12 }}>
-            📋 Datos del padre/tutor (formulario controlado)
+            📋 Datos del padre/tutor 
           </p>
 
           <div className="form-grid">
@@ -127,7 +131,7 @@ export default function Registro() {
 
           {/* ── Sección 2: Formulario NO CONTROLADO (useRef) ── */}
           <p style={{ fontSize: 12, color: 'var(--azul)', fontWeight: 600, margin: '16px 0 12px' }}>
-            👶 Datos del alumno (formulario no controlado - useRef)
+            👶 Datos del alumno 
           </p>
 
           <div className="form-grid">

@@ -29,6 +29,7 @@ export default function Inicio() {
   return (
     <div>
       <div className="hero">
+        <img src="/CendiJugando.png" alt="Cendi Jugando" style={{ height: 80, width: 'auto', marginBottom: 16, borderRadius: 10 }} />
         <h1>Bienvenidos a Cendi Jugando 🌟</h1>
         <p>Centro de Desarrollo Infantil · Aguascalientes, Ags.<br />
           Formando niños felices, seguros y creativos</p>

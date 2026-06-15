@@ -270,3 +270,29 @@ tbody td { padding: 10px 12px; }
 .text-center { text-align: center; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+
+
+/* ── Modo oscuro ── */
+body.dark {
+  --azul-light: #1a2a3a;
+  --gris: #2a2a2a;
+  --gris-borde: #3a3a3a;
+  --texto: #e8e8e8;
+  --texto-muted: #aaaaaa;
+  --blanco: #1e1e1e;
+  background: #121212;
+}
+body.dark .card { background: #1e1e1e; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+body.dark .form-control { background: #2a2a2a; color: #e8e8e8; border-color: #3a3a3a; }
+body.dark .form-control:focus { border-color: var(--azul); }
+body.dark .auth-card { background: #1e1e1e; }
+body.dark .modal { background: #1e1e1e; }
+body.dark .modal-overlay { background: rgba(0,0,0,0.7); }
+body.dark tbody tr:hover { background: #2a3a4a; }
+body.dark .stat-card { background: #1e1e1e; }
+body.dark .aviso-card { background: #1e1e1e; }
+body.dark table thead tr { background: var(--azul); }
+body.dark .page-btn { background: #2a2a2a; color: #e8e8e8; border-color: #3a3a3a; }
+body.dark .page-btn.active { background: var(--azul); color: white; }
+body.dark select option { background: #2a2a2a; color: #e8e8e8; }

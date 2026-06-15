@@ -76,6 +76,10 @@ export default function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+         <button onClick={() => navigate('/')} 
+           style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--azul)', fontSize: 14, marginBottom: 8 }}>
+          ← Volver 
+         </button>
         <div className="auth-logo">
           <div className="emoji">🌟</div>
           <h1>Cendi Jugando</h1>
