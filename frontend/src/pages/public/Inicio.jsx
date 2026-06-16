@@ -47,7 +47,7 @@ export default function Inicio() {
 
       <div className="page-container">
         <h2 className="page-title">Nuestros servicios</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 32 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
           {SERVICIOS.map((s) => (
             <div key={s.titulo} className="card" style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 8 }}>{s.emoji}</div>
@@ -72,7 +72,7 @@ export default function Inicio() {
 
         <h2 className="page-title">Contacto</h2>
         <div className="card">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div><strong>📍 Dirección</strong><p className="text-muted" style={{ fontSize: 13, marginTop: 4 }}>Calle Francisco González Bocanegra N,<br />20180 Aguascalientes, Ags.</p></div>
               <div><strong>📞 Teléfono</strong><p className="text-muted" style={{ fontSize: 13, marginTop: 4 }}>(449) 975 0700</p></div>
